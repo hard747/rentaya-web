@@ -9,7 +9,7 @@ Frontend da **RentaYa**, uma locadora de carros e motos. Consome a API REST
 [**rentaya-api**](https://github.com/hard747/rentaya-api) (Java 21 + Spring Boot) e
 oferece um catálogo público, a área do cliente e um painel de gestão para a empresa.
 
-**Demo:** <https://rentaya-web.onrender.com> · API: <https://rentaya-api-b2q2.onrender.com/swagger-ui.html>
+**Demo:** <https://rentaya-web-1fgw.onrender.com> · API: <https://rentaya-api-b2q2.onrender.com/swagger-ui.html>
 (plano gratuito do Render: o primeiro acesso após um período sem uso pode levar cerca de 1 minuto,
 e a interface avisa enquanto o servidor acorda).
 
