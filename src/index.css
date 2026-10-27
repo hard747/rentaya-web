@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+/* Modo oscuro por clase en <html>, para que el usuario pueda elegirlo. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-marca-50: oklch(0.97 0.02 265);
+  --color-marca-100: oklch(0.93 0.04 265);
+  --color-marca-200: oklch(0.86 0.08 265);
+  --color-marca-400: oklch(0.68 0.16 265);
+  --color-marca-500: oklch(0.58 0.2 265);
+  --color-marca-600: oklch(0.5 0.21 265);
+  --color-marca-700: oklch(0.43 0.19 265);
+  --color-marca-900: oklch(0.28 0.1 265);
+}
+
+@layer base {
+  html {
+    @apply bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+  }
+
+  body {
+    @apply min-h-dvh;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-marca-500;
+  }
+}

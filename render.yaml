@@ -1,0 +1,26 @@
+# Despliegue en Render (Blueprint): sitio estático servido por CDN, sin servidor propio.
+services:
+  - type: web
+    name: rentaya-web
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      # Vite incrusta esta URL en el build: la API a la que llama el navegador.
+      - key: VITE_API_URL
+        value: https://rentaya-api-b2q2.onrender.com
+    # SPA: cualquier ruta (/panel, /login…) la resuelve React Router desde index.html.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
