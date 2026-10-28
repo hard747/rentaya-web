@@ -10,16 +10,16 @@ import { inicioSegunRol, useAuth } from '../lib/auth'
 
 // Mismas reglas que las validaciones de LoginRequest y RegistroRequest en el backend.
 const esquemaLogin = z.object({
-  username: z.string().trim().min(1, 'Ingresa tu usuario'),
-  password: z.string().min(1, 'Ingresa tu contraseña'),
+  username: z.string().trim().min(1, 'Informe seu usuário'),
+  password: z.string().min(1, 'Informe sua senha'),
 })
 
 const esquemaRegistro = z.object({
-  nombre: z.string().trim().min(1, 'Ingresa tu nombre completo'),
-  dni: z.string().regex(/^\d{8}$/, 'El DNI tiene exactamente 8 dígitos'),
-  email: z.email('Ingresa un correo válido'),
-  username: z.string().trim().min(4, 'Mínimo 4 caracteres').max(50, 'Máximo 50 caracteres'),
-  password: z.string().min(8, 'Mínimo 8 caracteres').max(72, 'Máximo 72 caracteres'),
+  nombre: z.string().trim().min(1, 'Informe seu nome completo'),
+  dni: z.string().regex(/^\d{8}$/, 'O DNI tem exatamente 8 dígitos'),
+  email: z.email('Informe um e-mail válido'),
+  username: z.string().trim().min(4, 'Mínimo de 4 caracteres').max(50, 'Máximo de 50 caracteres'),
+  password: z.string().min(8, 'Mínimo de 8 caracteres').max(72, 'Máximo de 72 caracteres'),
 })
 
 type DatosLogin = z.infer<typeof esquemaLogin>
@@ -55,32 +55,32 @@ export function Login() {
       const nueva = await iniciarSesion(username, password)
       navigate(desde && desde !== '/login' ? desde : inicioSegunRol(nueva), { replace: true })
     } catch (e) {
-      setError('root', { message: e instanceof ApiError && e.status === 401 ? 'Usuario o contraseña incorrectos' : mensajeDeError(e) })
+      setError('root', { message: e instanceof ApiError && e.status === 401 ? 'Usuário ou senha incorretos' : mensajeDeError(e) })
     }
   })
 
   return (
     <Marco
-      titulo="Ingresa a tu cuenta"
+      titulo="Entre na sua conta"
       subtitulo={
         <>
-          ¿No tienes cuenta?{' '}
+          Não tem conta?{' '}
           <Link to="/registro" className="font-medium text-marca-600 hover:underline dark:text-marca-400">
-            Regístrate
+            Cadastre-se
           </Link>
         </>
       }
     >
-      <form onSubmit={enviar} className="space-y-4" noValidate aria-label="Iniciar sesión">
-        <Campo etiqueta="Usuario" error={formState.errors.username?.message}>
+      <form onSubmit={enviar} className="space-y-4" noValidate aria-label="Entrar">
+        <Campo etiqueta="Usuário" error={formState.errors.username?.message}>
           {(p) => <Entrada {...p} {...register('username')} autoComplete="username" autoFocus />}
         </Campo>
-        <Campo etiqueta="Contraseña" error={formState.errors.password?.message}>
+        <Campo etiqueta="Senha" error={formState.errors.password?.message}>
           {(p) => <Entrada {...p} {...register('password')} type="password" autoComplete="current-password" />}
         </Campo>
         {formState.errors.root && <Aviso>{formState.errors.root.message}</Aviso>}
         <Boton type="submit" className="w-full" cargando={formState.isSubmitting}>
-          Ingresar
+          Entrar
         </Boton>
       </form>
     </Marco>
@@ -116,25 +116,25 @@ export function Registro() {
 
   return (
     <Marco
-      titulo="Crea tu cuenta"
+      titulo="Crie sua conta"
       subtitulo={
         <>
-          ¿Ya tienes cuenta?{' '}
+          Já tem conta?{' '}
           <Link to="/login" className="font-medium text-marca-600 hover:underline dark:text-marca-400">
-            Ingresa
+            Entre
           </Link>
         </>
       }
     >
-      <form onSubmit={enviar} className="space-y-4" noValidate aria-label="Crear cuenta">
-        {campo('nombre', 'Nombre completo', { autoComplete: 'name', autoFocus: true })}
+      <form onSubmit={enviar} className="space-y-4" noValidate aria-label="Criar conta">
+        {campo('nombre', 'Nome completo', { autoComplete: 'name', autoFocus: true })}
         {campo('dni', 'DNI', { inputMode: 'numeric', maxLength: 8 })}
-        {campo('email', 'Correo', { type: 'email', autoComplete: 'email' })}
-        {campo('username', 'Usuario', { autoComplete: 'username' })}
-        {campo('password', 'Contraseña', { type: 'password', autoComplete: 'new-password' })}
+        {campo('email', 'E-mail', { type: 'email', autoComplete: 'email' })}
+        {campo('username', 'Usuário', { autoComplete: 'username' })}
+        {campo('password', 'Senha', { type: 'password', autoComplete: 'new-password' })}
         {formState.errors.root && <Aviso>{formState.errors.root.message}</Aviso>}
         <Boton type="submit" className="w-full" cargando={formState.isSubmitting}>
-          Crear cuenta
+          Criar conta
         </Boton>
       </form>
     </Marco>

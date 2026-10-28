@@ -27,7 +27,7 @@ export function LayoutPublico() {
               </NavLink>
               {sesion?.rol === 'CLIENTE' && (
                 <NavLink to="/mis-alquileres" className={enlace}>
-                  Mis alquileres
+                  Meus aluguéis
                 </NavLink>
               )}
             </nav>
@@ -42,25 +42,25 @@ export function LayoutPublico() {
                 {sesion.rol === 'CLIENTE' ? (
                   <Link
                     to="/mis-alquileres"
-                    aria-label="Mis alquileres"
+                    aria-label="Meus aluguéis"
                     className="grid size-8 place-items-center rounded-lg text-zinc-600 hover:bg-zinc-100 sm:hidden dark:text-zinc-400 dark:hover:bg-zinc-800"
                   >
                     <Receipt className="size-4" />
                   </Link>
                 ) : (
                   <Boton tamano="sm" onClick={() => navigate('/panel')} icono={<LayoutDashboard className="size-4" />}>
-                    Panel
+                    Painel
                   </Boton>
                 )}
-                <Boton variante="fantasma" tamano="sm" onClick={cerrarSesion} icono={<LogOut className="size-4" />} aria-label="Cerrar sesión" />
+                <Boton variante="fantasma" tamano="sm" onClick={cerrarSesion} icono={<LogOut className="size-4" />} aria-label="Sair" />
               </>
             ) : (
               <>
                 <Boton variante="fantasma" tamano="sm" onClick={() => navigate('/login')}>
-                  Ingresar
+                  Entrar
                 </Boton>
                 <Boton tamano="sm" onClick={() => navigate('/registro')}>
-                  Crear cuenta
+                  Criar conta
                 </Boton>
               </>
             )}
@@ -73,7 +73,7 @@ export function LayoutPublico() {
       <footer className="border-t border-zinc-200 py-6 text-center text-xs text-zinc-500 dark:border-zinc-800">
         RentaYa · React + Spring Boot ·{' '}
         <a className="underline hover:text-zinc-900 dark:hover:text-white" href="https://github.com/hard747/rentaya-web">
-          código fuente
+          código-fonte
         </a>
       </footer>
     </div>

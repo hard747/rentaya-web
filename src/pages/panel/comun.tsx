@@ -113,9 +113,9 @@ export const texto = (datos: FormData, campo: string) => String(datos.get(campo)
 export const numero = (datos: FormData, campo: string) => Number(datos.get(campo))
 
 export function Estrellas({ valor }: { valor?: number }) {
-  if (!valor) return <span className="text-zinc-400">Sin calificar</span>
+  if (!valor) return <span className="text-zinc-400">Sem avaliação</span>
   return (
-    <span className="tabular-nums" aria-label={`${valor} de 5 estrellas`}>
+    <span className="tabular-nums" aria-label={`${valor} de 5 estrelas`}>
       <span className="text-amber-500">★</span> {valor.toFixed(2)}
     </span>
   )

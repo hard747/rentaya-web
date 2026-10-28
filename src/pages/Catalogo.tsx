@@ -13,16 +13,16 @@ import type { Pagina, Vehiculo } from '../lib/types'
 
 const FILTROS = [
   { valor: '', texto: 'Todos' },
-  { valor: 'AUTO', texto: 'Autos' },
+  { valor: 'AUTO', texto: 'Carros' },
   { valor: 'MOTO', texto: 'Motos' },
-  { valor: 'CAMION', texto: 'Camiones' },
+  { valor: 'CAMION', texto: 'Caminhões' },
 ]
 
 const ORDENES = [
-  { valor: 'id,desc', texto: 'Más recientes' },
-  { valor: 'tarifaDiariaBase,asc', texto: 'Precio: menor a mayor' },
-  { valor: 'tarifaDiariaBase,desc', texto: 'Precio: mayor a menor' },
-  { valor: 'anio,desc', texto: 'Año: más nuevos' },
+  { valor: 'id,desc', texto: 'Mais recentes' },
+  { valor: 'tarifaDiariaBase,asc', texto: 'Preço: menor para maior' },
+  { valor: 'tarifaDiariaBase,desc', texto: 'Preço: maior para menor' },
+  { valor: 'anio,desc', texto: 'Ano: mais novos' },
 ]
 
 export function Catalogo() {
@@ -60,19 +60,19 @@ export function Catalogo() {
       <section className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
           <Insignia tono="marca">
-            <Sparkles className="size-3" /> Autos y motos para cada viaje
+            <Sparkles className="size-3" /> Carros e motos para cada viagem
           </Insignia>
           <h1 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-            Alquila un auto o una moto en minutos.
+            Alugue um carro ou uma moto em minutos.
           </h1>
           <p className="mt-4 max-w-xl text-lg text-zinc-500 text-pretty">
-            Elige el vehículo, mira el precio final al instante y confirma. Sin papeleo.
+            Escolha o veículo, veja o preço final na hora e confirme. Sem burocracia.
           </p>
           <dl className="mt-10 grid max-w-2xl gap-6 sm:grid-cols-3">
             {[
-              { icono: Timer, titulo: '10% de descuento', texto: 'en autos desde 7 días' },
-              { icono: ShieldCheck, titulo: 'Casco incluido', texto: 'en motos seleccionadas' },
-              { icono: Sparkles, titulo: 'Clientes premium', texto: 'hasta 30% de descuento' },
+              { icono: Timer, titulo: '10% de desconto', texto: 'em carros a partir de 7 dias' },
+              { icono: ShieldCheck, titulo: 'Capacete incluído', texto: 'em motos selecionadas' },
+              { icono: Sparkles, titulo: 'Clientes premium', texto: 'até 30% de desconto' },
             ].map(({ icono: Icono, titulo, texto }) => (
               <div key={titulo} className="flex gap-3">
                 <Icono className="mt-0.5 size-5 shrink-0 text-marca-600 dark:text-marca-400" aria-hidden />
@@ -88,7 +88,7 @@ export function Catalogo() {
 
       <section className="mx-auto max-w-6xl px-4 py-10">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <div role="tablist" aria-label="Tipo de vehículo" className="flex flex-wrap gap-1 rounded-lg bg-zinc-100 p-1 dark:bg-zinc-900">
+          <div role="tablist" aria-label="Tipo de veículo" className="flex flex-wrap gap-1 rounded-lg bg-zinc-100 p-1 dark:bg-zinc-900">
             {FILTROS.map((f) => (
               <button
                 key={f.valor}
@@ -119,12 +119,12 @@ export function Catalogo() {
         </div>
 
         {vehiculos.isLoading ? (
-          <Cargando texto="Cargando vehículos…" />
+          <Cargando texto="Carregando veículos…" />
         ) : vehiculos.isError ? (
           <Aviso>{mensajeDeError(vehiculos.error)}</Aviso>
         ) : vehiculos.data!.content.length === 0 ? (
-          <Vacio icono={<SearchX className="size-5" />} titulo="No hay vehículos de este tipo">
-            Prueba con otro filtro.
+          <Vacio icono={<SearchX className="size-5" />} titulo="Não há veículos deste tipo">
+            Tente outro filtro.
           </Vacio>
         ) : (
           <>
@@ -173,9 +173,9 @@ function TarjetaVehiculo({ vehiculo: v, onAlquilar }: { vehiculo: Vehiculo; onAl
           {esCamion ? (
             <Insignia>Uso interno</Insignia>
           ) : v.disponible ? (
-            <Insignia tono="verde">Disponible</Insignia>
+            <Insignia tono="verde">Disponível</Insignia>
           ) : (
-            <Insignia tono="ambar">Alquilado</Insignia>
+            <Insignia tono="ambar">Alugado</Insignia>
           )}
         </div>
         <p className="mt-3 text-xs text-zinc-500">
@@ -184,11 +184,11 @@ function TarjetaVehiculo({ vehiculo: v, onAlquilar }: { vehiculo: Vehiculo; onAl
         <div className="mt-auto flex items-end justify-between gap-3 pt-5">
           <p>
             <span className="text-xl font-semibold tabular-nums">{formatoMoneda(v.tarifaDiariaBase)}</span>
-            <span className="text-sm text-zinc-500"> / día</span>
+            <span className="text-sm text-zinc-500"> / dia</span>
           </p>
           {!esCamion && (
             <Boton tamano="sm" onClick={onAlquilar} disabled={!v.disponible}>
-              Alquilar
+              Alugar
             </Boton>
           )}
         </div>

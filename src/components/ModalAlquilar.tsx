@@ -46,7 +46,7 @@ export function ModalAlquilar({ vehiculo, clienteFijo, onCerrar, onAlquilado }: 
     onSuccess: (alquiler) => {
       queryClient.invalidateQueries({ queryKey: ['vehiculos'] })
       queryClient.invalidateQueries({ queryKey: ['alquileres'] })
-      notificar(`Alquiler confirmado: ${alquiler.vehiculo}`)
+      notificar(`Aluguel confirmado: ${alquiler.vehiculo}`)
       onAlquilado?.(alquiler)
       cerrar()
     },
@@ -60,7 +60,7 @@ export function ModalAlquilar({ vehiculo, clienteFijo, onCerrar, onAlquilado }: 
   }
 
   return (
-    <Modal abierto={vehiculo !== null} titulo="Alquilar vehículo" descripcion={vehiculo?.descripcion} onCerrar={cerrar}>
+    <Modal abierto={vehiculo !== null} titulo="Alugar veículo" descripcion={vehiculo?.descripcion} onCerrar={cerrar}>
       <form
         className="space-y-4"
         onSubmit={(e) => {
@@ -72,7 +72,7 @@ export function ModalAlquilar({ vehiculo, clienteFijo, onCerrar, onAlquilado }: 
           <Campo etiqueta="Cliente">
             {(p) => (
               <Selector {...p} required value={clienteElegido} onChange={(e) => setClienteElegido(e.target.value)} disabled={clientes.isLoading}>
-                <option value="">{clientes.isLoading ? 'Cargando clientes…' : 'Elige un cliente'}</option>
+                <option value="">{clientes.isLoading ? 'Carregando clientes…' : 'Escolha um cliente'}</option>
                 {clientes.data?.content.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.nombre} · DNI {c.dni}
@@ -83,7 +83,7 @@ export function ModalAlquilar({ vehiculo, clienteFijo, onCerrar, onAlquilado }: 
             )}
           </Campo>
         )}
-        <Campo etiqueta="Días de alquiler" error={dias && !diasValidos ? 'Ingresa un número de días entre 1 y 365' : undefined} ayuda="Desde 7 días los autos tienen 10% de descuento.">
+        <Campo etiqueta="Dias de aluguel" error={dias && !diasValidos ? 'Informe um número de dias entre 1 e 365' : undefined} ayuda="A partir de 7 dias, os carros têm 10% de desconto.">
           {(p) => <Entrada {...p} type="number" min={1} max={365} inputMode="numeric" required value={dias} onChange={(e) => setDias(e.target.value)} />}
         </Campo>
 
@@ -96,7 +96,7 @@ export function ModalAlquilar({ vehiculo, clienteFijo, onCerrar, onAlquilado }: 
           </div>
           {vehiculo && (
             <p className="mt-1 text-xs text-zinc-500">
-              Tarifa base {formatoMoneda(vehiculo.tarifaDiariaBase)} por día · precio final calculado por el servidor
+              Tarifa base {formatoMoneda(vehiculo.tarifaDiariaBase)} por dia · preço final calculado pelo servidor
             </p>
           )}
         </div>
@@ -109,7 +109,7 @@ export function ModalAlquilar({ vehiculo, clienteFijo, onCerrar, onAlquilado }: 
             Cancelar
           </Boton>
           <Boton type="submit" cargando={alquilar.isPending} disabled={!diasValidos || clienteId === undefined || !cotizacion.data}>
-            Confirmar alquiler
+            Confirmar aluguel
           </Boton>
         </div>
       </form>

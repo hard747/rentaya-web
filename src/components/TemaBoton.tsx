@@ -21,7 +21,7 @@ export function TemaBoton() {
       variante="fantasma"
       tamano="sm"
       onClick={alternar}
-      aria-label={oscuro ? 'Usar tema claro' : 'Usar tema oscuro'}
+      aria-label={oscuro ? 'Usar tema claro' : 'Usar tema escuro'}
       icono={oscuro ? <Sun className="size-4" /> : <Moon className="size-4" />}
     />
   )

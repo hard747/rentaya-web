@@ -17,11 +17,11 @@ export function Usuarios() {
   return (
     <>
       <Encabezado
-        titulo="Usuarios"
-        descripcion="Cuentas con acceso al sistema. Los clientes se registran solos; aquí se crean administradores y empleados."
+        titulo="Usuários"
+        descripcion="Contas com acesso ao sistema. Os clientes se cadastram sozinhos; aqui são criados administradores e funcionários."
         acciones={
           <Boton onClick={() => setCreando(true)} icono={<Plus className="size-4" />}>
-            Nuevo usuario
+            Novo usuário
           </Boton>
         }
       />
@@ -34,7 +34,7 @@ export function Usuarios() {
           </div>
         ) : (
           <div className="p-1">
-            <Tabla cabeceras={['Usuario', 'Rol', 'Cliente asociado']}>
+            <Tabla cabeceras={['Usuário', 'Perfil', 'Cliente associado']}>
               {usuarios.data!.map((u) => (
                 <tr key={u.id}>
                   <Celda className="font-medium">{u.username}</Celda>
@@ -51,22 +51,22 @@ export function Usuarios() {
 
       <ModalFormulario
         abierto={creando}
-        titulo="Nuevo usuario"
-        descripcion="La contraseña se guarda cifrada con BCrypt."
-        textoEnviar="Crear usuario"
+        titulo="Novo usuário"
+        descripcion="A senha é salva criptografada com BCrypt."
+        textoEnviar="Criar usuário"
         onCerrar={() => setCreando(false)}
         onEnviar={async (d) => {
           const creado = await api<Usuario>('/api/v1/usuarios', {
             metodo: 'POST',
             cuerpo: { username: texto(d, 'username'), password: String(d.get('password')), rol: texto(d, 'rol') },
           })
-          trasOperar(['usuarios'], `Usuario ${creado.username} creado`)
+          trasOperar(['usuarios'], `Usuário ${creado.username} criado`)
         }}
       >
-        <CampoTexto etiqueta="Usuario" name="username" required minLength={4} maxLength={50} autoComplete="off" />
-        <CampoTexto etiqueta="Contraseña" name="password" type="password" required minLength={8} maxLength={72} autoComplete="new-password" ayuda="Mínimo 8 caracteres" />
-        <CampoSelector etiqueta="Rol" name="rol" defaultValue="EMPLEADO">
-          <option value="EMPLEADO">Empleado</option>
+        <CampoTexto etiqueta="Usuário" name="username" required minLength={4} maxLength={50} autoComplete="off" />
+        <CampoTexto etiqueta="Senha" name="password" type="password" required minLength={8} maxLength={72} autoComplete="new-password" ayuda="Mínimo de 8 caracteres" />
+        <CampoSelector etiqueta="Perfil" name="rol" defaultValue="EMPLEADO">
+          <option value="EMPLEADO">Funcionário</option>
           <option value="ADMIN">Administrador</option>
         </CampoSelector>
       </ModalFormulario>

@@ -62,7 +62,7 @@ export async function api<T>(ruta: string, opciones: { metodo?: Metodo; cuerpo?:
       body: opciones.cuerpo === undefined ? undefined : JSON.stringify(opciones.cuerpo),
     })
   } catch {
-    throw new ApiError(0, 'No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.')
+    throw new ApiError(0, 'Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.')
   } finally {
     clearTimeout(temporizador)
     if (marcadaLenta) cambiarLentas(-1)
@@ -76,7 +76,7 @@ export async function api<T>(ruta: string, opciones: { metodo?: Metodo; cuerpo?:
     if (respuesta.status === 401 && conToken) alExpirarSesion()
     throw new ApiError(
       respuesta.status,
-      datos?.message ?? `Error ${respuesta.status}`,
+      datos?.message ?? `Erro ${respuesta.status}`,
       datos?.errores ?? undefined,
     )
   }
@@ -92,5 +92,5 @@ export function mensajeDeError(error: unknown): string {
     }
     return error.message
   }
-  return 'Ocurrió un error inesperado.'
+  return 'Ocorreu um erro inesperado.'
 }

@@ -1,6 +1,6 @@
-const moneda = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' })
-const numero = new Intl.NumberFormat('es-PE', { maximumFractionDigits: 2 })
-const fecha = new Intl.DateTimeFormat('es-PE', { dateStyle: 'medium', timeStyle: 'short' })
+const moneda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+const numero = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 })
+const fecha = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'medium', timeStyle: 'short' })
 
 export const formatoMoneda = (valor: number) => moneda.format(valor)
 export const formatoNumero = (valor: number) => numero.format(valor)
@@ -12,14 +12,14 @@ export function periodoActual(hoy = new Date()) {
 }
 
 export const nombreTipo: Record<string, string> = {
-  AUTO: 'Auto',
+  AUTO: 'Carro',
   MOTO: 'Moto',
-  CAMION: 'Camión',
+  CAMION: 'Caminhão',
   CLIENTE: 'Cliente',
   CLIENTE_PREMIUM: 'Premium',
-  CONDUCTOR: 'Conductor',
-  MECANICO: 'Mecánico',
-  TALLER: 'Taller',
+  CONDUCTOR: 'Motorista',
+  MECANICO: 'Mecânico',
+  TALLER: 'Oficina',
   ADMIN: 'Administrador',
-  EMPLEADO: 'Empleado',
+  EMPLEADO: 'Funcionário',
 }

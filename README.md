@@ -5,7 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-7-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
 
-Frontend da **RentaYa**, uma locadora de carros e motos. Consome a API REST
+Frontend da **RentaYa**, uma concessionária de veículos. Consome a API REST
 [**rentaya-api**](https://github.com/hard747/rentaya-api) (Java 21 + Spring Boot) e
 oferece um catálogo público, a área do cliente e um painel de gestão para a empresa.
 

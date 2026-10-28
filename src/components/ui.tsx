@@ -116,7 +116,7 @@ export function Tarjeta({ className, children }: { className?: string; children:
   )
 }
 
-export function Cargando({ texto = 'Cargando…' }: { texto?: string }) {
+export function Cargando({ texto = 'Carregando…' }: { texto?: string }) {
   return (
     <div role="status" className="flex items-center justify-center gap-2 py-16 text-sm text-zinc-500">
       <Loader2 className="size-5 animate-spin" aria-hidden />
@@ -155,13 +155,13 @@ export function Vacio({ icono, titulo, children }: { icono: ReactNode; titulo: s
 export function Paginacion({ pagina, totalPaginas, total, onCambiar }: { pagina: number; totalPaginas: number; total: number; onCambiar: (p: number) => void }) {
   if (totalPaginas <= 1) return null
   return (
-    <nav aria-label="Paginación" className="flex items-center justify-between gap-4 pt-4 text-sm text-zinc-500">
+    <nav aria-label="Paginação" className="flex items-center justify-between gap-4 pt-4 text-sm text-zinc-500">
       <span>
         Página {pagina + 1} de {totalPaginas} · {total} resultados
       </span>
       <div className="flex gap-2">
         <Boton variante="secundario" tamano="sm" disabled={pagina === 0} onClick={() => onCambiar(pagina - 1)} icono={<ChevronLeft className="size-4" />} aria-label="Página anterior" />
-        <Boton variante="secundario" tamano="sm" disabled={pagina + 1 >= totalPaginas} onClick={() => onCambiar(pagina + 1)} icono={<ChevronRight className="size-4" />} aria-label="Página siguiente" />
+        <Boton variante="secundario" tamano="sm" disabled={pagina + 1 >= totalPaginas} onClick={() => onCambiar(pagina + 1)} icono={<ChevronRight className="size-4" />} aria-label="Próxima página" />
       </div>
     </nav>
   )
@@ -200,7 +200,7 @@ export function Modal({ abierto, titulo, descripcion, onCerrar, children }: Prop
           <h2 className="text-base font-semibold">{titulo}</h2>
           {descripcion && <p className="mt-0.5 text-sm text-zinc-500">{descripcion}</p>}
         </div>
-        <Boton variante="fantasma" tamano="sm" onClick={onCerrar} aria-label="Cerrar" icono={<X className="size-4" />} />
+        <Boton variante="fantasma" tamano="sm" onClick={onCerrar} aria-label="Fechar" icono={<X className="size-4" />} />
       </div>
       <div className="px-6 py-5">{children}</div>
     </dialog>

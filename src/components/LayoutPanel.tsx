@@ -30,14 +30,14 @@ interface Seccion {
 
 // Mismos permisos que SecurityConfig en el backend.
 const SECCIONES: Seccion[] = [
-  { ruta: '/panel', texto: 'Resumen', icono: Gauge, roles: ['ADMIN', 'EMPLEADO'] },
-  { ruta: '/panel/vehiculos', texto: 'Vehículos', icono: CarFront, roles: ['ADMIN', 'EMPLEADO'] },
-  { ruta: '/panel/alquileres', texto: 'Alquileres', icono: Receipt, roles: ['ADMIN', 'EMPLEADO'] },
+  { ruta: '/panel', texto: 'Resumo', icono: Gauge, roles: ['ADMIN', 'EMPLEADO'] },
+  { ruta: '/panel/vehiculos', texto: 'Veículos', icono: CarFront, roles: ['ADMIN', 'EMPLEADO'] },
+  { ruta: '/panel/alquileres', texto: 'Aluguéis', icono: Receipt, roles: ['ADMIN', 'EMPLEADO'] },
   { ruta: '/panel/clientes', texto: 'Clientes', icono: Users, roles: ['ADMIN', 'EMPLEADO'] },
-  { ruta: '/panel/empleados', texto: 'Empleados', icono: HardHat, roles: ['ADMIN'] },
-  { ruta: '/panel/talleres', texto: 'Talleres', icono: Building2, roles: ['ADMIN'] },
-  { ruta: '/panel/planilla', texto: 'Planilla', icono: Wallet, roles: ['ADMIN'] },
-  { ruta: '/panel/usuarios', texto: 'Usuarios', icono: KeyRound, roles: ['ADMIN'] },
+  { ruta: '/panel/empleados', texto: 'Funcionários', icono: HardHat, roles: ['ADMIN'] },
+  { ruta: '/panel/talleres', texto: 'Oficinas', icono: Building2, roles: ['ADMIN'] },
+  { ruta: '/panel/planilla', texto: 'Folha de pagamento', icono: Wallet, roles: ['ADMIN'] },
+  { ruta: '/panel/usuarios', texto: 'Usuários', icono: KeyRound, roles: ['ADMIN'] },
 ]
 
 export function seccionesPara(rol: Rol) {
@@ -50,7 +50,7 @@ export function LayoutPanel() {
   if (!sesion) return null
 
   const menu = (
-    <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Secciones del panel">
+    <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Seções do painel">
       {seccionesPara(sesion.rol).map(({ ruta, texto, icono: Icono }) => (
         <NavLink
           key={ruta}
@@ -81,7 +81,7 @@ export function LayoutPanel() {
       </div>
       <div className="flex">
         <TemaBoton />
-        <Boton variante="fantasma" tamano="sm" onClick={cerrarSesion} aria-label="Cerrar sesión" icono={<LogOut className="size-4" />} />
+        <Boton variante="fantasma" tamano="sm" onClick={cerrarSesion} aria-label="Sair" icono={<LogOut className="size-4" />} />
       </div>
     </div>
   )
@@ -102,7 +102,7 @@ export function LayoutPanel() {
           variante="fantasma"
           tamano="sm"
           onClick={() => setMenuAbierto((a) => !a)}
-          aria-label={menuAbierto ? 'Cerrar menú' : 'Abrir menú'}
+          aria-label={menuAbierto ? 'Fechar menu' : 'Abrir menu'}
           aria-expanded={menuAbierto}
           icono={menuAbierto ? <X className="size-5" /> : <Menu className="size-5" />}
         />

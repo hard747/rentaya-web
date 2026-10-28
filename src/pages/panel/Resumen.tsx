@@ -58,38 +58,38 @@ export function Resumen() {
 
   return (
     <>
-      <Encabezado titulo={`Hola, ${sesion?.username}`} descripcion="Así está la operación hoy." />
+      <Encabezado titulo={`Olá, ${sesion?.username}`} descripcion="Assim está a operação hoje." />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Indicador icono={<CarFront className="size-4" />} titulo="Flota activa" valor={formatoNumero(flota.length)} detalle={`${alquilables.length} alquilables · ${flota.length - alquilables.length === 1 ? '1 camión' : `${flota.length - alquilables.length} camiones`}`} />
-        <Indicador icono={<CircleCheck className="size-4" />} titulo="Disponibles" valor={formatoNumero(disponibles)} detalle={`${alquilables.length - disponibles} alquilados ahora`} />
-        <Indicador icono={<Receipt className="size-4" />} titulo="Alquileres en curso" valor={formatoNumero(activos)} detalle={`${formatoMoneda(ingresos)} facturados en total`} />
+        <Indicador icono={<CarFront className="size-4" />} titulo="Frota ativa" valor={formatoNumero(flota.length)} detalle={`${alquilables.length} para aluguel · ${flota.length - alquilables.length === 1 ? '1 caminhão' : `${flota.length - alquilables.length} caminhões`}`} />
+        <Indicador icono={<CircleCheck className="size-4" />} titulo="Disponíveis" valor={formatoNumero(disponibles)} detalle={`${alquilables.length - disponibles} alugados agora`} />
+        <Indicador icono={<Receipt className="size-4" />} titulo="Aluguéis em andamento" valor={formatoNumero(activos)} detalle={`${formatoMoneda(ingresos)} faturados no total`} />
         {esAdmin ? (
-          <Indicador icono={<Wallet className="size-4" />} titulo="Planilla del mes" valor={planilla.data ? formatoMoneda(planilla.data.total) : '—'} detalle={planilla.data ? `${planilla.data.pagos.length} pagos pendientes` : undefined} />
+          <Indicador icono={<Wallet className="size-4" />} titulo="Folha do mês" valor={planilla.data ? formatoMoneda(planilla.data.total) : '—'} detalle={planilla.data ? `${planilla.data.pagos.length} pagamentos pendentes` : undefined} />
         ) : (
-          <Indicador icono={<Receipt className="size-4" />} titulo="Alquileres registrados" valor={formatoNumero(lista.length)} />
+          <Indicador icono={<Receipt className="size-4" />} titulo="Aluguéis registrados" valor={formatoNumero(lista.length)} />
         )}
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[2fr_1fr]">
         <Tarjeta>
           <div className="flex items-center justify-between px-5 pt-5 pb-2">
-            <h2 className="font-semibold">Últimos alquileres</h2>
+            <h2 className="font-semibold">Últimos aluguéis</h2>
             <Link to="/panel/alquileres" className="text-sm font-medium text-marca-600 hover:underline dark:text-marca-400">
               Ver todos
             </Link>
           </div>
           {lista.length === 0 ? (
-            <p className="px-5 pb-6 text-sm text-zinc-500">Aún no hay alquileres.</p>
+            <p className="px-5 pb-6 text-sm text-zinc-500">Ainda não há aluguéis.</p>
           ) : (
-            <Tabla cabeceras={['Cliente', 'Vehículo', 'Inicio', 'Total', 'Estado']}>
+            <Tabla cabeceras={['Cliente', 'Veículo', 'Início', 'Total', 'Status']}>
               {lista.slice(0, 6).map((a) => (
                 <tr key={a.id}>
                   <Celda className="font-medium">{a.cliente}</Celda>
                   <Celda>{a.vehiculo}</Celda>
                   <Celda className="text-zinc-500">{formatoFecha(a.fechaInicio)}</Celda>
                   <Celda className="tabular-nums">{formatoMoneda(a.costoTotal)}</Celda>
-                  <Celda>{a.estado === 'ACTIVO' ? <Insignia tono="verde">En curso</Insignia> : <Insignia>Finalizado</Insignia>}</Celda>
+                  <Celda>{a.estado === 'ACTIVO' ? <Insignia tono="verde">Em andamento</Insignia> : <Insignia>Finalizado</Insignia>}</Celda>
                 </tr>
               ))}
             </Tabla>
@@ -98,8 +98,8 @@ export function Resumen() {
 
         {esAdmin && (
           <Tarjeta className="p-5">
-            <h2 className="font-semibold">Flota por marca</h2>
-            <p className="text-xs text-zinc-500">Consulta nativa SQL agrupada en PostgreSQL</p>
+            <h2 className="font-semibold">Frota por marca</h2>
+            <p className="text-xs text-zinc-500">Consulta SQL nativa agrupada no PostgreSQL</p>
             <ul className="mt-4 space-y-3">
               {topMarcas.map((m) => (
                 <li key={m.marca}>
@@ -110,7 +110,7 @@ export function Resumen() {
                   <div className="mt-1 h-2 rounded-full bg-zinc-100 dark:bg-zinc-800">
                     <div className="h-2 rounded-full bg-marca-500" style={{ width: `${(m.cantidad / maximo) * 100}%` }} />
                   </div>
-                  <p className="mt-0.5 text-xs text-zinc-500">Promedio {formatoNumero(m.promedioKilometraje)} km</p>
+                  <p className="mt-0.5 text-xs text-zinc-500">Média de {formatoNumero(m.promedioKilometraje)} km</p>
                 </li>
               ))}
             </ul>

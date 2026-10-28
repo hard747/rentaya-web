@@ -42,11 +42,11 @@ export function Alquileres() {
   return (
     <>
       <Encabezado
-        titulo="Alquileres"
-        descripcion="Registra alquileres para clientes y procesa devoluciones."
+        titulo="Aluguéis"
+        descripcion="Registre aluguéis para clientes e processe devoluções."
         acciones={
           <Boton onClick={() => setEligiendo(true)} icono={<Plus className="size-4" />}>
-            Nuevo alquiler
+            Novo aluguel
           </Boton>
         }
       />
@@ -59,10 +59,10 @@ export function Alquileres() {
             <Aviso>{mensajeDeError(alquileres.error)}</Aviso>
           </div>
         ) : alquileres.data!.content.length === 0 ? (
-          <p className="p-6 text-sm text-zinc-500">Aún no hay alquileres.</p>
+          <p className="p-6 text-sm text-zinc-500">Ainda não há aluguéis.</p>
         ) : (
           <div className="p-1">
-            <Tabla cabeceras={['#', 'Cliente', 'Vehículo', 'Inicio', 'Días', 'Total', 'Estado', '']}>
+            <Tabla cabeceras={['#', 'Cliente', 'Veículo', 'Início', 'Dias', 'Total', 'Status', '']}>
               {alquileres.data!.content.map((a) => (
                 <tr key={a.id}>
                   <Celda className="text-zinc-500">{a.id}</Celda>
@@ -73,17 +73,17 @@ export function Alquileres() {
                   <Celda className="tabular-nums">{formatoMoneda(a.costoTotal)}</Celda>
                   <Celda>
                     {a.estado === 'ACTIVO' ? (
-                      <Insignia tono="verde">En curso</Insignia>
+                      <Insignia tono="verde">Em andamento</Insignia>
                     ) : (
                       <span className="text-xs text-zinc-500">
-                        Devuelto {a.fechaDevolucion && formatoFecha(a.fechaDevolucion)} · {formatoNumero(a.kmRecorridos ?? 0)} km
+                        Devolvido {a.fechaDevolucion && formatoFecha(a.fechaDevolucion)} · {formatoNumero(a.kmRecorridos ?? 0)} km
                       </span>
                     )}
                   </Celda>
                   <Celda>
                     {a.estado === 'ACTIVO' && (
                       <Boton variante="secundario" tamano="sm" onClick={() => setDevolviendo(a)} icono={<Undo2 className="size-4" />}>
-                        Devolución
+                        Devolução
                       </Boton>
                     )}
                   </Celda>
@@ -99,35 +99,35 @@ export function Alquileres() {
 
       <ModalFormulario
         abierto={devolviendo !== null}
-        titulo="Registrar devolución"
+        titulo="Registrar devolução"
         descripcion={devolviendo ? `${devolviendo.vehiculo} · ${devolviendo.cliente}` : undefined}
-        textoEnviar="Finalizar alquiler"
+        textoEnviar="Finalizar aluguel"
         onCerrar={() => setDevolviendo(null)}
         onEnviar={async (d) => {
           await api(`/api/v1/alquileres/${devolviendo!.id}/devolucion`, { metodo: 'POST', cuerpo: { kmRecorridos: numero(d, 'km') } })
-          trasOperar(['alquileres', 'vehiculos'], 'Devolución registrada: el vehículo vuelve a estar disponible')
+          trasOperar(['alquileres', 'vehiculos'], 'Devolução registrada: o veículo está disponível novamente')
         }}
       >
-        <CampoTexto etiqueta="Kilómetros recorridos" name="km" type="number" min={0.01} step={0.01} required ayuda="Se suman al kilometraje del vehículo en la misma transacción." />
+        <CampoTexto etiqueta="Quilômetros percorridos" name="km" type="number" min={0.01} step={0.01} required ayuda="São somados à quilometragem do veículo na mesma transação." />
       </ModalFormulario>
 
       <ModalFormulario
         abierto={eligiendo}
-        titulo="Nuevo alquiler"
-        descripcion="Elige un vehículo disponible."
+        titulo="Novo aluguel"
+        descripcion="Escolha um veículo disponível."
         textoEnviar="Continuar"
         onCerrar={() => setEligiendo(false)}
         onEnviar={async (d) => {
           const elegido = disponibles.data?.find((v) => v.id === numero(d, 'vehiculo'))
-          if (!elegido) throw new Error('Elige un vehículo')
+          if (!elegido) throw new Error('Escolha um veículo')
           setVehiculoElegido(elegido)
         }}
       >
-        <CampoSelector etiqueta="Vehículo" name="vehiculo" required disabled={disponibles.isLoading}>
-          <option value="">{disponibles.isLoading ? 'Cargando…' : 'Elige un vehículo'}</option>
+        <CampoSelector etiqueta="Veículo" name="vehiculo" required disabled={disponibles.isLoading}>
+          <option value="">{disponibles.isLoading ? 'Carregando…' : 'Escolha um veículo'}</option>
           {disponibles.data?.map((v) => (
             <option key={v.id} value={v.id}>
-              {v.descripcion} · {formatoMoneda(v.tarifaDiariaBase)}/día
+              {v.descripcion} · {formatoMoneda(v.tarifaDiariaBase)}/dia
             </option>
           ))}
         </CampoSelector>

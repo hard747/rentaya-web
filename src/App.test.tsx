@@ -24,19 +24,19 @@ describe('Catálogo público', () => {
     renderizarEn('/')
 
     const tarjetaYaris = (await screen.findByRole('heading', { name: 'Toyota Yaris' })).closest('div.flex-col') as HTMLElement
-    expect(within(tarjetaYaris).getByText('Disponible')).toBeInTheDocument()
-    expect(within(tarjetaYaris).getByRole('button', { name: 'Alquilar' })).toBeEnabled()
+    expect(within(tarjetaYaris).getByText('Disponível')).toBeInTheDocument()
+    expect(within(tarjetaYaris).getByRole('button', { name: 'Alugar' })).toBeEnabled()
 
     const tarjetaVolvo = screen.getByRole('heading', { name: 'Volvo FH' }).closest('div.flex-col') as HTMLElement
     expect(within(tarjetaVolvo).getByText('Uso interno')).toBeInTheDocument()
-    expect(within(tarjetaVolvo).queryByRole('button', { name: 'Alquilar' })).not.toBeInTheDocument()
+    expect(within(tarjetaVolvo).queryByRole('button', { name: 'Alugar' })).not.toBeInTheDocument()
   })
 
   it('al alquilar sin sesión lleva al login', async () => {
     simularApi((url) => (url.includes('/api/v1/vehiculos?') ? { body: paginaDe([yaris]) } : undefined))
     const router = renderizarEn('/')
 
-    await userEvent.click(await screen.findByRole('button', { name: 'Alquilar' }))
+    await userEvent.click(await screen.findByRole('button', { name: 'Alugar' }))
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/login'))
   })
@@ -51,10 +51,10 @@ describe('Catálogo público', () => {
     })
     const router = renderizarEn('/')
 
-    await userEvent.click(await screen.findByRole('button', { name: 'Alquilar' }))
+    await userEvent.click(await screen.findByRole('button', { name: 'Alugar' }))
     const dialogo = await screen.findByRole('dialog')
-    expect(await within(dialogo).findByText(/360\.00/)).toBeInTheDocument()
-    await userEvent.click(within(dialogo).getByRole('button', { name: 'Confirmar alquiler' }))
+    expect(await within(dialogo).findByText(/360,00/)).toBeInTheDocument()
+    await userEvent.click(within(dialogo).getByRole('button', { name: 'Confirmar aluguel' }))
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/mis-alquileres'))
     const post = fetch.mock.calls.find(([, init]) => init?.method === 'POST')
@@ -73,24 +73,24 @@ describe('Acceso y permisos', () => {
     })
     const router = renderizarEn('/login')
 
-    await userEvent.type(await screen.findByLabelText('Usuario'), 'admin')
-    await userEvent.type(screen.getByLabelText('Contraseña'), 'clave-secreta')
-    await userEvent.click(within(screen.getByRole('form', { name: 'Iniciar sesión' })).getByRole('button', { name: 'Ingresar' }))
+    await userEvent.type(await screen.findByLabelText('Usuário'), 'admin')
+    await userEvent.type(screen.getByLabelText('Senha'), 'clave-secreta')
+    await userEvent.click(within(screen.getByRole('form', { name: 'Entrar' })).getByRole('button', { name: 'Entrar' }))
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/panel'))
     expect(localStorage.getItem(CLAVE_TOKEN)).toBe(token)
-    expect(await screen.findByRole('link', { name: 'Planilla' })).toBeInTheDocument()
+    expect(await screen.findByRole('link', { name: 'Folha de pagamento' })).toBeInTheDocument()
   })
 
   it('muestra el error de credenciales incorrectas', async () => {
     simularApi(() => ({ status: 401, body: { message: 'Credenciales inválidas' } }))
     renderizarEn('/login')
 
-    await userEvent.type(await screen.findByLabelText('Usuario'), 'admin')
-    await userEvent.type(screen.getByLabelText('Contraseña'), 'incorrecta')
-    await userEvent.click(within(screen.getByRole('form', { name: 'Iniciar sesión' })).getByRole('button', { name: 'Ingresar' }))
+    await userEvent.type(await screen.findByLabelText('Usuário'), 'admin')
+    await userEvent.type(screen.getByLabelText('Senha'), 'incorrecta')
+    await userEvent.click(within(screen.getByRole('form', { name: 'Entrar' })).getByRole('button', { name: 'Entrar' }))
 
-    expect(await screen.findByText('Usuario o contraseña incorrectos')).toBeInTheDocument()
+    expect(await screen.findByText('Usuário ou senha incorretos')).toBeInTheDocument()
   })
 
   it('valida el registro en el cliente antes de llamar a la API', async () => {
@@ -98,9 +98,9 @@ describe('Acceso y permisos', () => {
     renderizarEn('/registro')
 
     await userEvent.type(await screen.findByLabelText('DNI'), '123')
-    await userEvent.click(within(screen.getByRole('form', { name: 'Crear cuenta' })).getByRole('button', { name: 'Crear cuenta' }))
+    await userEvent.click(within(screen.getByRole('form', { name: 'Criar conta' })).getByRole('button', { name: 'Criar conta' }))
 
-    expect(await screen.findByText('El DNI tiene exactamente 8 dígitos')).toBeInTheDocument()
+    expect(await screen.findByText('O DNI tem exatamente 8 dígitos')).toBeInTheDocument()
     expect(fetch).not.toHaveBeenCalled()
   })
 
@@ -113,9 +113,9 @@ describe('Acceso y permisos', () => {
     const router = renderizarEn('/panel/planilla')
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/panel'))
-    expect(await screen.findByRole('link', { name: 'Vehículos' })).toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'Planilla' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'Usuarios' })).not.toBeInTheDocument()
+    expect(await screen.findByRole('link', { name: 'Veículos' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Folha de pagamento' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Usuários' })).not.toBeInTheDocument()
   })
 
   it('sin sesión, el panel redirige al login', async () => {

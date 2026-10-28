@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const valor = useMemo<ContextoAuth>(() => {
     const conToken = (respuesta: TokenResponse) => {
       const nueva = aplicar(respuesta.token)
-      if (!nueva) throw new Error('La API devolvió un token inválido')
+      if (!nueva) throw new Error('A API devolveu um token inválido')
       return nueva
     }
     return {

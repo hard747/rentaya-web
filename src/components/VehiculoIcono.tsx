@@ -19,7 +19,7 @@ export function VehiculoIcono({ tipo, grande }: { tipo: TipoVehiculo; grande?: b
 }
 
 export function detallesVehiculo(v: { tipo: TipoVehiculo; numeroPuertas?: number; cilindrada?: number; incluyeCasco?: boolean; capacidadToneladas?: number }) {
-  if (v.tipo === 'AUTO') return `${v.numeroPuertas} puertas`
-  if (v.tipo === 'MOTO') return `${v.cilindrada} cc${v.incluyeCasco ? ' · con casco' : ''}`
+  if (v.tipo === 'AUTO') return `${v.numeroPuertas} portas`
+  if (v.tipo === 'MOTO') return `${v.cilindrada} cc${v.incluyeCasco ? ' · com capacete' : ''}`
   return `${v.capacidadToneladas} t de carga`
 }

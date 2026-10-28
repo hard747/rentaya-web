@@ -20,9 +20,9 @@ export function MisAlquileres() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <Encabezado
-        titulo="Mis alquileres"
-        descripcion="Tus alquileres activos y tu historial."
-        acciones={<Boton onClick={() => navigate('/')}>Alquilar otro vehículo</Boton>}
+        titulo="Meus aluguéis"
+        descripcion="Seus aluguéis ativos e seu histórico."
+        acciones={<Boton onClick={() => navigate('/')}>Alugar outro veículo</Boton>}
       />
       {alquileres.isLoading ? (
         <Cargando />
@@ -30,8 +30,8 @@ export function MisAlquileres() {
         <Aviso>{mensajeDeError(alquileres.error)}</Aviso>
       ) : alquileres.data!.content.length === 0 ? (
         <Tarjeta>
-          <Vacio icono={<Receipt className="size-5" />} titulo="Todavía no tienes alquileres">
-            Elige un auto o una moto en el catálogo.
+          <Vacio icono={<Receipt className="size-5" />} titulo="Você ainda não tem aluguéis">
+            Escolha um carro ou uma moto no catálogo.
           </Vacio>
         </Tarjeta>
       ) : (
@@ -43,11 +43,11 @@ export function MisAlquileres() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="font-medium">{a.vehiculo}</p>
-                      {a.estado === 'ACTIVO' ? <Insignia tono="verde">En curso</Insignia> : <Insignia>Finalizado</Insignia>}
+                      {a.estado === 'ACTIVO' ? <Insignia tono="verde">Em andamento</Insignia> : <Insignia>Finalizado</Insignia>}
                     </div>
                     <p className="mt-1 text-sm text-zinc-500">
-                      {formatoFecha(a.fechaInicio)} · {a.dias} {a.dias === 1 ? 'día' : 'días'}
-                      {a.kmRecorridos !== undefined && ` · ${formatoNumero(a.kmRecorridos)} km recorridos`}
+                      {formatoFecha(a.fechaInicio)} · {a.dias} {a.dias === 1 ? 'dia' : 'dias'}
+                      {a.kmRecorridos !== undefined && ` · ${formatoNumero(a.kmRecorridos)} km percorridos`}
                     </p>
                   </div>
                   <p className="text-lg font-semibold tabular-nums">{formatoMoneda(a.costoTotal)}</p>

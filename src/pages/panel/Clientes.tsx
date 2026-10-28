@@ -22,10 +22,10 @@ export function Clientes() {
     <>
       <Encabezado
         titulo="Clientes"
-        descripcion="Clientes normales y premium. Los clientes también pueden registrarse solos desde la web."
+        descripcion="Clientes normais e premium. Os clientes também podem se cadastrar sozinhos pelo site."
         acciones={
           <Boton onClick={() => setCreando(true)} icono={<Plus className="size-4" />}>
-            Nuevo cliente
+            Novo cliente
           </Boton>
         }
       />
@@ -37,10 +37,10 @@ export function Clientes() {
             <Aviso>{mensajeDeError(clientes.error)}</Aviso>
           </div>
         ) : clientes.data!.content.length === 0 ? (
-          <p className="p-6 text-sm text-zinc-500">Aún no hay clientes.</p>
+          <p className="p-6 text-sm text-zinc-500">Ainda não há clientes.</p>
         ) : (
           <div className="p-1">
-            <Tabla cabeceras={['Nombre', 'DNI', 'Correo', 'Tipo']}>
+            <Tabla cabeceras={['Nome', 'DNI', 'E-mail', 'Tipo']}>
               {clientes.data!.content.map((c) => (
                 <tr key={c.id}>
                   <Celda className="font-medium">{c.nombre}</Celda>
@@ -59,8 +59,8 @@ export function Clientes() {
 
       <ModalFormulario
         abierto={creando}
-        titulo="Nuevo cliente"
-        textoEnviar="Crear cliente"
+        titulo="Novo cliente"
+        textoEnviar="Criar cliente"
         onCerrar={() => {
           setCreando(false)
           setPremium(false)
@@ -74,19 +74,19 @@ export function Clientes() {
             ...(premium && { porcentajeDescuento: numero(d, 'descuento') }),
           }
           const creado = await api<Cliente>('/api/v1/clientes', { metodo: 'POST', cuerpo })
-          trasOperar(['clientes'], `Cliente ${creado.nombre} creado`)
+          trasOperar(['clientes'], `Cliente ${creado.nombre} criado`)
         }}
       >
         <CampoSelector etiqueta="Tipo de cliente" value={premium ? 'p' : 'n'} onChange={(e) => setPremium(e.target.value === 'p')}>
           <option value="n">Normal</option>
-          <option value="p">Premium (con descuento)</option>
+          <option value="p">Premium (com desconto)</option>
         </CampoSelector>
-        <CampoTexto etiqueta="Nombre completo" name="nombre" required />
+        <CampoTexto etiqueta="Nome completo" name="nombre" required />
         <div className="grid gap-4 sm:grid-cols-2">
           <CampoTexto etiqueta="DNI" name="dni" required pattern="\d{8}" inputMode="numeric" maxLength={8} ayuda="8 dígitos" />
-          <CampoTexto etiqueta="Correo" name="email" type="email" required />
+          <CampoTexto etiqueta="E-mail" name="email" type="email" required />
         </div>
-        {premium && <CampoTexto etiqueta="Descuento (%)" name="descuento" type="number" min={0} max={30} step={0.5} required ayuda="Entre 0 y 30 %" />}
+        {premium && <CampoTexto etiqueta="Desconto (%)" name="descuento" type="number" min={0} max={30} step={0.5} required ayuda="Entre 0 e 30 %" />}
       </ModalFormulario>
     </>
   )

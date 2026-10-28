@@ -32,8 +32,8 @@ export function Vehiculos() {
   return (
     <>
       <Encabezado
-        titulo="Vehículos"
-        descripcion="Flota activa: tarifas, kilometraje y mantenimiento."
+        titulo="Veículos"
+        descripcion="Frota ativa: tarifas, quilometragem e manutenção."
         acciones={
           <>
             <Selector
@@ -45,14 +45,14 @@ export function Vehiculos() {
                 setPagina(0)
               }}
             >
-              <option value="">Todos los tipos</option>
-              <option value="AUTO">Autos</option>
+              <option value="">Todos os tipos</option>
+              <option value="AUTO">Carros</option>
               <option value="MOTO">Motos</option>
-              <option value="CAMION">Camiones</option>
+              <option value="CAMION">Caminhões</option>
             </Selector>
             {esAdmin && (
               <Boton onClick={() => setCreando(true)} icono={<Plus className="size-4" />}>
-                Nuevo vehículo
+                Novo veículo
               </Boton>
             )}
           </>
@@ -68,7 +68,7 @@ export function Vehiculos() {
           </div>
         ) : (
           <div className="p-1">
-            <Tabla cabeceras={['Vehículo', 'Tipo', 'Detalle', 'Tarifa / día', 'Kilometraje', 'Estado', '']}>
+            <Tabla cabeceras={['Veículo', 'Tipo', 'Detalhe', 'Tarifa / dia', 'Quilometragem', 'Status', '']}>
               {vehiculos.data!.content.map((v) => (
                 <tr key={v.id}>
                   <Celda>
@@ -87,7 +87,7 @@ export function Vehiculos() {
                   <Celda className="tabular-nums">{formatoMoneda(v.tarifaDiariaBase)}</Celda>
                   <Celda className="tabular-nums">{formatoNumero(v.kilometraje)} km</Celda>
                   <Celda>
-                    {v.tipo === 'CAMION' ? <Insignia>Uso interno</Insignia> : v.disponible ? <Insignia tono="verde">Disponible</Insignia> : <Insignia tono="ambar">Alquilado</Insignia>}
+                    {v.tipo === 'CAMION' ? <Insignia>Uso interno</Insignia> : v.disponible ? <Insignia tono="verde">Disponível</Insignia> : <Insignia tono="ambar">Alugado</Insignia>}
                   </Celda>
                   <Celda>
                     <div className="flex justify-end gap-1">
@@ -96,10 +96,10 @@ export function Vehiculos() {
                           Tarifa
                         </Boton>
                       )}
-                      <Boton variante="fantasma" tamano="sm" onClick={() => setAccion({ tipo: 'km', vehiculo: v })} icono={<Gauge className="size-4" />} aria-label={`Registrar kilómetros de ${v.placa}`} />
-                      <Boton variante="fantasma" tamano="sm" onClick={() => setMantenimiento(v)} icono={<Wrench className="size-4" />} aria-label={`Costo de mantenimiento de ${v.placa}`} />
+                      <Boton variante="fantasma" tamano="sm" onClick={() => setAccion({ tipo: 'km', vehiculo: v })} icono={<Gauge className="size-4" />} aria-label={`Registrar quilômetros de ${v.placa}`} />
+                      <Boton variante="fantasma" tamano="sm" onClick={() => setMantenimiento(v)} icono={<Wrench className="size-4" />} aria-label={`Custo de manutenção de ${v.placa}`} />
                       {esAdmin && (
-                        <Boton variante="fantasma" tamano="sm" onClick={() => setAccion({ tipo: 'eliminar', vehiculo: v })} icono={<Trash2 className="size-4 text-red-600" />} aria-label={`Dar de baja ${v.placa}`} />
+                        <Boton variante="fantasma" tamano="sm" onClick={() => setAccion({ tipo: 'eliminar', vehiculo: v })} icono={<Trash2 className="size-4 text-red-600" />} aria-label={`Desativar ${v.placa}`} />
                       )}
                     </div>
                   </Celda>
@@ -115,46 +115,46 @@ export function Vehiculos() {
 
       <ModalFormulario
         abierto={accion?.tipo === 'tarifa'}
-        titulo="Cambiar tarifa"
+        titulo="Alterar tarifa"
         descripcion={accion?.vehiculo.descripcion}
-        textoEnviar="Guardar tarifa"
+        textoEnviar="Salvar tarifa"
         onCerrar={cerrar}
         onEnviar={async (d) => {
           await api(`/api/v1/vehiculos/${accion!.vehiculo.id}/tarifa`, { metodo: 'PUT', cuerpo: { tarifaDiariaBase: numero(d, 'tarifa') } })
-          trasOperar(['vehiculos'], 'Tarifa actualizada')
+          trasOperar(['vehiculos'], 'Tarifa atualizada')
         }}
       >
-        <CampoTexto etiqueta="Tarifa diaria base (S/)" name="tarifa" type="number" min={0.01} step={0.01} required defaultValue={accion?.vehiculo.tarifaDiariaBase} />
+        <CampoTexto etiqueta="Tarifa diária base (R$)" name="tarifa" type="number" min={0.01} step={0.01} required defaultValue={accion?.vehiculo.tarifaDiariaBase} />
       </ModalFormulario>
 
       <ModalFormulario
         abierto={accion?.tipo === 'km'}
-        titulo="Registrar kilómetros"
+        titulo="Registrar quilômetros"
         descripcion={accion?.vehiculo.descripcion}
         textoEnviar="Registrar"
         onCerrar={cerrar}
         onEnviar={async (d) => {
           await api(`/api/v1/vehiculos/${accion!.vehiculo.id}/kilometros`, { metodo: 'POST', cuerpo: { kilometros: numero(d, 'km') } })
-          trasOperar(['vehiculos'], 'Kilometraje actualizado')
+          trasOperar(['vehiculos'], 'Quilometragem atualizada')
         }}
       >
-        <CampoTexto etiqueta="Kilómetros recorridos" name="km" type="number" min={0.01} step={0.01} required ayuda={`Kilometraje actual: ${formatoNumero(accion?.vehiculo.kilometraje ?? 0)} km`} />
+        <CampoTexto etiqueta="Quilômetros percorridos" name="km" type="number" min={0.01} step={0.01} required ayuda={`Quilometragem atual: ${formatoNumero(accion?.vehiculo.kilometraje ?? 0)} km`} />
       </ModalFormulario>
 
       <ModalFormulario
         abierto={accion?.tipo === 'eliminar'}
-        titulo="Dar de baja el vehículo"
-        descripcion="Es una baja lógica: deja de aparecer en el catálogo, pero su historial se conserva."
-        textoEnviar="Dar de baja"
+        titulo="Desativar o veículo"
+        descripcion="É uma exclusão lógica: ele deixa de aparecer no catálogo, mas o histórico é mantido."
+        textoEnviar="Desativar"
         peligro
         onCerrar={cerrar}
         onEnviar={async () => {
           await api(`/api/v1/vehiculos/${accion!.vehiculo.id}`, { metodo: 'DELETE' })
-          trasOperar(['vehiculos'], 'Vehículo dado de baja')
+          trasOperar(['vehiculos'], 'Veículo desativado')
         }}
       >
         <p className="text-sm">
-          ¿Dar de baja <strong>{accion?.vehiculo.descripcion}</strong>?
+          Desativar <strong>{accion?.vehiculo.descripcion}</strong>?
         </p>
       </ModalFormulario>
 
@@ -171,7 +171,7 @@ function ModalMantenimiento({ vehiculo, onCerrar }: { vehiculo: Vehiculo | null;
     enabled: vehiculo !== null,
   })
   return (
-    <ModalFormulario abierto={vehiculo !== null} titulo="Costo de mantenimiento" descripcion={vehiculo?.descripcion} textoEnviar="Listo" onCerrar={onCerrar} onEnviar={async () => {}}>
+    <ModalFormulario abierto={vehiculo !== null} titulo="Custo de manutenção" descripcion={vehiculo?.descripcion} textoEnviar="Pronto" onCerrar={onCerrar} onEnviar={async () => {}}>
       {consulta.isLoading ? (
         <Cargando texto="Calculando…" />
       ) : consulta.isError ? (
@@ -179,10 +179,10 @@ function ModalMantenimiento({ vehiculo, onCerrar }: { vehiculo: Vehiculo | null;
       ) : (
         consulta.data && (
           <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/60">
-            <p className="text-sm text-zinc-500">Con {formatoNumero(consulta.data.kilometraje)} km</p>
+            <p className="text-sm text-zinc-500">Com {formatoNumero(consulta.data.kilometraje)} km</p>
             <p className="text-3xl font-semibold tabular-nums">{formatoMoneda(consulta.data.costoMantenimiento)}</p>
             <p className="mt-2 text-xs text-zinc-500">
-              Polimorfismo: cada tipo calcula su propio costo (auto 100 + km × 0,05 · moto 50 + km × 0,03 · camión 300 + km × 0,10 + t × 20).
+              Polimorfismo: cada tipo calcula seu próprio custo (carro 100 + km × 0,05 · moto 50 + km × 0,03 · caminhão 300 + km × 0,10 + t × 20).
             </p>
           </div>
         )
@@ -198,8 +198,8 @@ function ModalNuevoVehiculo({ abierto, onCerrar }: { abierto: boolean; onCerrar:
   return (
     <ModalFormulario
       abierto={abierto}
-      titulo="Nuevo vehículo"
-      textoEnviar="Crear vehículo"
+      titulo="Novo veículo"
+      textoEnviar="Criar veículo"
       onCerrar={onCerrar}
       onEnviar={async (d) => {
         const base = {
@@ -217,27 +217,27 @@ function ModalNuevoVehiculo({ abierto, onCerrar }: { abierto: boolean; onCerrar:
               ? { cilindrada: numero(d, 'cilindrada'), incluyeCasco: d.get('casco') === 'on' }
               : { capacidadToneladas: numero(d, 'toneladas') }
         const creado = await api<Vehiculo>('/api/v1/vehiculos', { metodo: 'POST', cuerpo: { ...base, ...propios } })
-        trasOperar(['vehiculos'], `${creado.descripcion} creado`)
+        trasOperar(['vehiculos'], `${creado.descripcion} criado`)
       }}
     >
       <CampoSelector etiqueta="Tipo" value={tipo} onChange={(e) => setTipo(e.target.value as TipoVehiculo)}>
-        <option value="AUTO">Auto</option>
+        <option value="AUTO">Carro</option>
         <option value="MOTO">Moto</option>
-        <option value="CAMION">Camión</option>
+        <option value="CAMION">Caminhão</option>
       </CampoSelector>
       <div className="grid gap-4 sm:grid-cols-2">
         <CampoTexto etiqueta="Placa" name="placa" required pattern="[A-Za-z]{3}-\d{3}" placeholder="ABC-123" ayuda="Formato AAA-999" />
-        <CampoTexto etiqueta="Año" name="anio" type="number" min={1990} max={2027} required />
+        <CampoTexto etiqueta="Ano" name="anio" type="number" min={1990} max={2027} required />
         <CampoTexto etiqueta="Marca" name="marca" required />
         <CampoTexto etiqueta="Modelo" name="modelo" required />
-        <CampoTexto etiqueta="Tarifa diaria (S/)" name="tarifa" type="number" min={0.01} step={0.01} required />
-        {tipo === 'AUTO' && <CampoTexto etiqueta="Número de puertas" name="puertas" type="number" min={2} max={5} required defaultValue={4} />}
+        <CampoTexto etiqueta="Tarifa diária (R$)" name="tarifa" type="number" min={0.01} step={0.01} required />
+        {tipo === 'AUTO' && <CampoTexto etiqueta="Número de portas" name="puertas" type="number" min={2} max={5} required defaultValue={4} />}
         {tipo === 'MOTO' && <CampoTexto etiqueta="Cilindrada (cc)" name="cilindrada" type="number" min={1} required />}
-        {tipo === 'CAMION' && <CampoTexto etiqueta="Capacidad (toneladas)" name="toneladas" type="number" min={0.01} step={0.01} required />}
+        {tipo === 'CAMION' && <CampoTexto etiqueta="Capacidade (toneladas)" name="toneladas" type="number" min={0.01} step={0.01} required />}
       </div>
       {tipo === 'MOTO' && (
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" name="casco" className="size-4 rounded accent-marca-600" /> Incluye casco (+ S/ 5 por día)
+          <input type="checkbox" name="casco" className="size-4 rounded accent-marca-600" /> Inclui capacete (+ R$ 5 por dia)
         </label>
       )}
     </ModalFormulario>

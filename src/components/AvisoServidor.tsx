@@ -11,7 +11,7 @@ export function AvisoServidor() {
     <div role="status" className="fixed inset-x-0 top-0 z-50 flex justify-center p-3">
       <div className="flex items-center gap-2 rounded-full bg-zinc-900 px-4 py-2 text-sm text-white shadow-lg dark:bg-white dark:text-zinc-900">
         <Loader2 className="size-4 animate-spin" aria-hidden />
-        Despertando el servidor… la primera carga puede tardar hasta un minuto.
+        Acordando o servidor… o primeiro carregamento pode levar até um minuto.
       </div>
     </div>
   )

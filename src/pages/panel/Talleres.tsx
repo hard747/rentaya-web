@@ -18,11 +18,11 @@ export function Talleres() {
   return (
     <>
       <Encabezado
-        titulo="Talleres externos"
-        descripcion="Talleres tercerizados: facturación del mes (+ 18 % IGV) y calificaciones."
+        titulo="Oficinas externas"
+        descripcion="Oficinas terceirizadas: faturamento do mês (+ 18 % IGV) e avaliações."
         acciones={
           <Boton onClick={() => setCreando(true)} icono={<Plus className="size-4" />}>
-            Nuevo taller
+            Nova oficina
           </Boton>
         }
       />
@@ -34,10 +34,10 @@ export function Talleres() {
             <Aviso>{mensajeDeError(talleres.error)}</Aviso>
           </div>
         ) : talleres.data!.length === 0 ? (
-          <p className="p-6 text-sm text-zinc-500">Aún no hay talleres.</p>
+          <p className="p-6 text-sm text-zinc-500">Ainda não há oficinas.</p>
         ) : (
           <div className="p-1">
-            <Tabla cabeceras={['Razón social', 'RUC', 'Facturado en el mes', 'Pago con IGV', 'Calificación', '']}>
+            <Tabla cabeceras={['Razão social', 'RUC', 'Faturado no mês', 'Pagamento com IGV', 'Avaliação', '']}>
               {talleres.data!.map((t) => (
                 <tr key={t.id}>
                   <Celda className="font-medium">{t.razonSocial}</Celda>
@@ -50,9 +50,9 @@ export function Talleres() {
                   <Celda>
                     <div className="flex justify-end gap-1">
                       <Boton variante="secundario" tamano="sm" icono={<ReceiptText className="size-4" />} onClick={() => setAccion({ tipo: 'factura', taller: t })}>
-                        Factura
+                        Nota fiscal
                       </Boton>
-                      <Boton variante="fantasma" tamano="sm" icono={<Star className="size-4" />} aria-label={`Calificar a ${t.razonSocial}`} onClick={() => setAccion({ tipo: 'calificar', taller: t })} />
+                      <Boton variante="fantasma" tamano="sm" icono={<Star className="size-4" />} aria-label={`Avaliar ${t.razonSocial}`} onClick={() => setAccion({ tipo: 'calificar', taller: t })} />
                     </div>
                   </Celda>
                 </tr>
@@ -64,30 +64,30 @@ export function Talleres() {
 
       <ModalFormulario
         abierto={accion?.tipo === 'factura'}
-        titulo="Registrar factura"
+        titulo="Registrar nota fiscal"
         descripcion={accion?.taller.razonSocial}
         textoEnviar="Registrar"
         onCerrar={() => setAccion(null)}
         onEnviar={async (d) => {
           await api(`/api/v1/talleres/${accion!.taller.id}/facturas`, { metodo: 'POST', cuerpo: { monto: numero(d, 'monto') } })
-          trasOperar(['talleres', 'planilla'], 'Factura registrada')
+          trasOperar(['talleres', 'planilla'], 'Nota fiscal registrada')
         }}
       >
-        <CampoTexto etiqueta="Monto (S/)" name="monto" type="number" min={0.01} step={0.01} required />
+        <CampoTexto etiqueta="Valor (R$)" name="monto" type="number" min={0.01} step={0.01} required />
       </ModalFormulario>
 
       <ModalFormulario
         abierto={accion?.tipo === 'calificar'}
-        titulo="Calificar taller"
+        titulo="Avaliar oficina"
         descripcion={accion?.taller.razonSocial}
-        textoEnviar="Calificar"
+        textoEnviar="Avaliar"
         onCerrar={() => setAccion(null)}
         onEnviar={async (d) => {
           await api(`/api/v1/talleres/${accion!.taller.id}/calificaciones`, { metodo: 'POST', cuerpo: { estrellas: numero(d, 'estrellas') } })
-          trasOperar(['talleres'], 'Calificación registrada')
+          trasOperar(['talleres'], 'Avaliação registrada')
         }}
       >
-        <CampoSelector etiqueta="Estrellas" name="estrellas" defaultValue="5">
+        <CampoSelector etiqueta="Estrelas" name="estrellas" defaultValue="5">
           {[5, 4, 3, 2, 1].map((n) => (
             <option key={n} value={n}>
               {'★'.repeat(n)} ({n})
@@ -98,15 +98,15 @@ export function Talleres() {
 
       <ModalFormulario
         abierto={creando}
-        titulo="Nuevo taller"
-        textoEnviar="Crear taller"
+        titulo="Nova oficina"
+        textoEnviar="Criar oficina"
         onCerrar={() => setCreando(false)}
         onEnviar={async (d) => {
           const creado = await api<Taller>('/api/v1/talleres', { metodo: 'POST', cuerpo: { razonSocial: texto(d, 'razon'), ruc: texto(d, 'ruc') } })
-          trasOperar(['talleres', 'planilla'], `${creado.razonSocial} agregado`)
+          trasOperar(['talleres', 'planilla'], `${creado.razonSocial} adicionada`)
         }}
       >
-        <CampoTexto etiqueta="Razón social" name="razon" required />
+        <CampoTexto etiqueta="Razão social" name="razon" required />
         <CampoTexto etiqueta="RUC" name="ruc" required pattern="\d{11}" inputMode="numeric" maxLength={11} ayuda="11 dígitos" />
       </ModalFormulario>
     </>
